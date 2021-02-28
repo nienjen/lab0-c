@@ -12,7 +12,9 @@
 queue_t *q_new()
 {
     queue_t *q = malloc(sizeof(queue_t));
-    if (!q) { return NULL; } /* if malloc returned NULL */
+    if (!q) {
+        return NULL;
+    } /* if malloc returned NULL */
     q->head = NULL;
     q->rear = NULL;
     q->size = 0;
@@ -22,7 +24,9 @@ queue_t *q_new()
 /* Free all storage used by queue */
 void q_free(queue_t *q)
 {
-    if (!q) { return; } /* if q is NULL */
+    if (!q) {
+        return;
+    } /* if q is NULL */
     /* Free the list elements and the strings */
     list_ele_t *current = q->head;
     while (current) {
@@ -43,11 +47,15 @@ void q_free(queue_t *q)
  */
 bool q_insert_head(queue_t *q, char *s)
 {
-    if (!q) { return false; } /* if q is NULL */
+    if (!q) {
+        return false;
+    } /* if q is NULL */
     list_ele_t *newhead;
     newhead = malloc(sizeof(list_ele_t));
     /* If malloc returned NULL */
-    if (!newhead) { return false; } 
+    if (!newhead) {
+        return false;
+    }
     newhead->next = NULL;
     /* Allocate space for the string */
     unsigned int str_length = strlen(s) + 1;
@@ -60,7 +68,9 @@ bool q_insert_head(queue_t *q, char *s)
     /* Copy the string */
     strncpy(newhead->value, s, str_length);
     /* Concatenate with other nodes */
-    if (!q->rear) { q->rear = newhead; }
+    if (!q->rear) {
+        q->rear = newhead;
+    }
     newhead->next = q->head;
     q->head = newhead;
     q->size++;
@@ -76,9 +86,13 @@ bool q_insert_head(queue_t *q, char *s)
  */
 bool q_insert_tail(queue_t *q, char *s)
 {
-    if (!q) { return false; }
+    if (!q) {
+        return false;
+    }
     list_ele_t *newrear = malloc(sizeof(list_ele_t));
-    if (!newrear) { return false; } /* If malloc returned NULL */
+    if (!newrear) {
+        return false;
+    } /* If malloc returned NULL */
     newrear->next = NULL;
     /* Remember: It should operate in O(1) time */
     unsigned int str_length = strlen(s) + 1;
@@ -91,8 +105,11 @@ bool q_insert_tail(queue_t *q, char *s)
     /* Copy the string */
     strncpy(newrear->value, s, str_length);
     /* Concatenate with other nodes */
-    if (!q->head) { q->head = newrear; }
-    else { q->rear->next = newrear; }
+    if (!q->head) {
+        q->head = newrear;
+    } else {
+        q->rear->next = newrear;
+    }
     q->rear = newrear;
     q->size++;
     return true;
@@ -108,7 +125,9 @@ bool q_insert_tail(queue_t *q, char *s)
  */
 bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
 {
-    if (!q || !q->head) { return false; } /* If queue is NULL or empty */
+    if (!q || !q->head) {
+        return false;
+    } /* If queue is NULL or empty */
     list_ele_t *del = q->head;
     q->head = q->head->next;
     /* If sp is non-NULL, copy the removed string to *sp */
@@ -120,7 +139,9 @@ bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
     free(del->value);
     free(del);
     /* If all the elements are removed */
-    if (!q->head) { q->rear = NULL; }
+    if (!q->head) {
+        q->rear = NULL;
+    }
     q->size--;
     return true;
 }
@@ -132,8 +153,11 @@ bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
 int q_size(queue_t *q)
 {
     /* Remember: It should operate in O(1) time */
-    if (!q) { return 0; }
-    else { return q->size; }
+    if (!q) {
+        return 0;
+    } else {
+        return q->size;
+    }
 }
 
 /*
@@ -145,11 +169,20 @@ int q_size(queue_t *q)
  */
 void q_reverse(queue_t *q)
 {
-    if (!q || !q->head) { return; }
-    list_ele_t *init_head = q->head, *init_rear = q->rear;
+    if (!q || !q->head) {
+        return;
+    }
+    // list_ele_t *init_head = q->head;
+    list_ele_t *init_rear = q->rear;
     list_ele_t *current = q->head;
     /* Start the reverse process */
-    
+    while (current != init_rear) {
+        list_ele_t *next = current->next;
+        current->next = q->rear->next;
+        q->rear->next = current;
+        current = next;
+    }
+    q->head = init_rear; /* Declare the initial rear(init_rear) as head */
 }
 
 /*
@@ -159,13 +192,16 @@ void q_reverse(queue_t *q)
  */
 void q_sort(queue_t *q)
 {
-    if (!q || (q->size < 2)) { return; }
+    if (!q || (q->size < 2)) {
+        return;
+    }
     do {
         do {
-            if (q->head->value > q->head->next->value) { swap(q->head, q->head->next); }
+            if (q->head->value > q->head->next->value) {
+                swap(q->head, q->head->next);
+            }
             q->head->next = q->head->next->next;
         } while (q->head->next);
         q->head = q->head->next;
     } while (q->head);
 }
-
