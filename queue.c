@@ -43,26 +43,26 @@ void q_free(queue_t *q)
  */
 bool q_insert_head(queue_t *q, char *s)
 {
-    if (!q) { return; } /* if q is NULL */
-    list_ele_t *newh;
-    newh = malloc(sizeof(list_ele_t));
+    if (!q) { return false; } /* if q is NULL */
+    list_ele_t *newhead;
+    newhead = malloc(sizeof(list_ele_t));
     /* If malloc returned NULL */
-    if (!newh) { return false; } 
-    newh->next = NULL;
+    if (!newhead) { return false; } 
+    newhead->next = NULL;
     /* Allocate space for the string */
     unsigned int str_length = strlen(s) + 1;
-    newh->value = malloc(str_length);
+    newhead->value = malloc(str_length);
     /* If malloc returned NULL */
-    if (!newh->value) {
-        free(newh);
+    if (!newhead->value) {
+        free(newhead);
         return false;
     }
     /* Copy the string */
-    strncpy(newh->value, s, str_length);
+    strncpy(newhead->value, s, str_length);
     /* Concatenate with other nodes */
-    if (!q->tail) { q->tail = newh; }
-    newh->next = q->head;
-    q->head = newh;
+    if (!q->rear) { q->rear = newhead; }
+    newhead->next = q->head;
+    q->head = newhead;
     q->size++;
     return true;
 }
@@ -76,9 +76,8 @@ bool q_insert_head(queue_t *q, char *s)
  */
 bool q_insert_tail(queue_t *q, char *s)
 {
-    /* TODO: You need to write the complete code for this function */
     /* Remember: It should operate in O(1) time */
-    /* TODO: Remove the above comment when you are about to implement. */
+    
     return false;
 }
 
