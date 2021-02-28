@@ -76,9 +76,26 @@ bool q_insert_head(queue_t *q, char *s)
  */
 bool q_insert_tail(queue_t *q, char *s)
 {
+    if (!q) { return false; }
+    list_ele_t *newrear = malloc(sizeof(list_ele_t));
+    if (!newrear) { return false; } /* If malloc returned NULL */
+    newrear->next = NULL;
     /* Remember: It should operate in O(1) time */
-    
-    return false;
+    str_length = strlen(s) + 1;
+    newrear->value = malloc(str_length);
+    /* If malloc returned NULL */
+    if (!newrear->value) {
+        free(newrear);
+        return false;
+    }
+    /* Copy the string */
+    strncpy(newrear->value, s, str_length);
+    /* Concatenate with other nodes */
+    if (!q->head) { q->head = newrear; }
+    else { q->rear->next = newrear; }
+    q->rear = newrear;
+    q->size++;
+    return true;
 }
 
 /*
