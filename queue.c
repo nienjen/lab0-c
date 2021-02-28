@@ -190,6 +190,15 @@ void q_reverse(queue_t *q)
  * No effect if q is NULL or empty. In addition, if q has only one
  * element, do nothing.
  */
+void swap(list_ele_t *a, list_ele_t *b)
+{
+    char *tmp = a->value;
+    a->value = b->value;
+    b->value = tmp;
+}
+
+
+
 void q_sort(queue_t *q)
 {
     if (!q || (q->size < 2)) {
