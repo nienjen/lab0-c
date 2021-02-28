@@ -81,7 +81,7 @@ bool q_insert_tail(queue_t *q, char *s)
     if (!newrear) { return false; } /* If malloc returned NULL */
     newrear->next = NULL;
     /* Remember: It should operate in O(1) time */
-    str_length = strlen(s) + 1;
+    unsigned int str_length = strlen(s) + 1;
     newrear->value = malloc(str_length);
     /* If malloc returned NULL */
     if (!newrear->value) {
@@ -120,7 +120,7 @@ bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
     free(del->value);
     free(del);
     /* If all the elements are removed */
-    if (!q->head) { q->tail = NULL; }
+    if (!q->head) { q->rear = NULL; }
     q->size--;
     return true;
 }
@@ -145,8 +145,11 @@ int q_size(queue_t *q)
  */
 void q_reverse(queue_t *q)
 {
-    /* TODO: You need to write the code for this function */
-    /* TODO: Remove the above comment when you are about to implement. */
+    if (!q || !q->head) { return; }
+    list_ele_t *init_head = q->head, *init_rear = q->rear;
+    list_ele_t *current = q->head;
+    /* Start the reverse process */
+    
 }
 
 /*
@@ -156,6 +159,13 @@ void q_reverse(queue_t *q)
  */
 void q_sort(queue_t *q)
 {
-    /* TODO: You need to write the code for this function */
-    /* TODO: Remove the above comment when you are about to implement. */
+    if (!q || (q->size < 2)) { return; }
+    do {
+        do {
+            if (q->head->value > q->head->next->value) { swap(q->head, q->head->next); }
+            q->head->next = q->head->next->next;
+        } while (q->head->next);
+        q->head = q->head->next;
+    } while (q->head);
 }
+
