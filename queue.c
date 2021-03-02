@@ -172,7 +172,8 @@ void q_reverse(queue_t *q)
     if (!q || !q->head) {
         return;
     }
-    // list_ele_t *init_head = q->head;
+    /* Save the initial head and rear first */
+    list_ele_t *init_head = q->head;
     list_ele_t *init_rear = q->rear;
     list_ele_t *current = q->head;
     /* Start the reverse process */
@@ -182,7 +183,10 @@ void q_reverse(queue_t *q)
         q->rear->next = current;
         current = next;
     }
-    q->head = init_rear; /* Declare the initial rear(init_rear) as head */
+    q->head = init_rear; /* Declare the initial rear as head */
+    /* Remove the tail */
+    q->rear = init_head;
+    q->rear->next = NULL;
 }
 
 /*
