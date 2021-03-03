@@ -196,7 +196,8 @@ void q_reverse(queue_t *q)
  */
 void swap(list_ele_t *a, list_ele_t *b)
 {
-    char *tmp = a->value;
+    char *tmp;
+    tmp = a->value;
     a->value = b->value;
     b->value = tmp;
 }
@@ -208,7 +209,17 @@ void q_sort(queue_t *q)
     if (!q || (q->size < 2)) {
         return;
     }
-    do {
+    list_ele_t *ptrh = q->head;
+    list_ele_t *ptrr = NULL;
+    while (ptrh->next != ptrr) {
+        if (ptrh->value > ptrh->next->value) {
+            swap(ptrh, ptrh->next);
+        }
+        ptrh = ptrh->next;
+    }
+
+
+    /* do {
         do {
             if (q->head->value > q->head->next->value) {
                 swap(q->head, q->head->next);
@@ -217,4 +228,5 @@ void q_sort(queue_t *q)
         } while (q->head->next);
         q->head = q->head->next;
     } while (q->head);
+    */
 }
