@@ -93,7 +93,4 @@ void q_reverse(queue_t *q);
  */
 void q_sort(queue_t *q);
 
-/* Add swap() for q_sort */
-void swap(list_ele_t *a, list_ele_t *b);
-
 #endif /* LAB0_QUEUE_H */
