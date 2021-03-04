@@ -194,17 +194,64 @@ void q_reverse(queue_t *q)
  * No effect if q is NULL or empty. In addition, if q has only one
  * element, do nothing.
  */
-void swap(list_ele_t *a, list_ele_t *b)
+void q_sort(queue_t *q)
 {
-    char *tmp;
-    tmp = a->value;
-    a->value = b->value;
-    b->value = tmp;
+    if (!q || q->size <= 1) {
+        return;
+    }
+    q->head = merge_sort_list(q->head);
+
+    while (q->rear->next) {
+        q->rear = q->rear->next;
+    }
+    return;
 }
 
 
+list_ele_t *merge_sort_list(list_ele_t *head)
+{
+    if (!head || !head->next) {
+        return head;
+    }
+    list_ele_t *fast = head->next;
+    list_ele_t *slow = head;
+    /* spilt list */
+    while (fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    fast = slow->next;
+    slow->next = NULL;
+    list_ele_t *l1 = merge_sort_list(head);
+    list_ele_t *l2 = merge_sort_list(fast);
+    return merge(l1, l2);
+}
 
-void q_sort(queue_t *q)
+/*Merge sort usage, merge two short lists into a longer one*/
+
+list_ele_t *merge(list_ele_t *l1, list_ele_t *l2)
+{
+    list_ele_t q;
+    list_ele_t *temp = &q;
+    while (l1 && l2) {
+        if (strcmp(l1->value, l2->value) < 0) {
+            temp->next = l1;
+            temp = temp->next;
+            l1 = l1->next;
+        } else {
+            temp->next = l2;
+            temp = temp->next;
+            l2 = l2->next;
+        }
+    }
+    if (l1)
+        temp->next = l1;
+    if (l2)
+        temp->next = l2;
+    return q.next;
+}
+
+/* void q_sort(queue_t *q)
 {
     if (!q || (q->size < 2)) {
         return;
@@ -219,7 +266,7 @@ void q_sort(queue_t *q)
     }
 
 
-    /* do {
+    // do {
         do {
             if (q->head->value > q->head->next->value) {
                 swap(q->head, q->head->next);
@@ -228,5 +275,5 @@ void q_sort(queue_t *q)
         } while (q->head->next);
         q->head = q->head->next;
     } while (q->head);
+
     */
-}
