@@ -30,10 +30,10 @@ void q_free(queue_t *q)
     /* Free the list elements and the strings */
     list_ele_t *current = q->head;
     while (current) {
-        list_ele_t *next = current->next;
+        list_ele_t *next_ele = current->next;
         free(current->value);
         free(current);
-        current = next;
+        current = next_ele;
     }
     free(q); /* Free queue structure */
 }
